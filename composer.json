@@ -33,7 +33,7 @@
         "phar": [ "@composer install", "@composer bin build install", "robo phar" ],
         "test": [ "@composer install", "phpunit" ],
         "coverage": [ "@composer install", "phpdbg -qrr vendor/bin/phpunit --coverage-text" ],
-        "phpstan": [ "@composer install", "php -d memory_limit=256M vendor/bin/phpstan analyse" ],
+        "phpstan": [ "@composer install", "phpstan analyse" ],
         "update-copyright": [ "@composer install", "robo update_copyright" ],
         "release:major": [ "@composer install", "robo release major" ],
         "release:minor": [ "@composer install", "robo release minor" ],
