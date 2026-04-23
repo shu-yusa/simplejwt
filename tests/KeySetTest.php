@@ -70,6 +70,23 @@ class KeySetTest extends TestCase {
         $this->assertEquals('oct2', $key->getKeyId());
     }
 
+    // Regression test for PHP 8.5: find() previously wrote $results[$kid]
+    // where $kid can be null when a key has no kid, which is deprecated in 8.5.
+    // Run with --fail-on-deprecation to turn the warning into a failure.
+    // See https://www.php.net/manual/en/migration85.deprecated.php
+    function testFindKeyWithoutKid() {
+        $keyset_data = [
+            'keys' => [
+                ['kty' => 'oct', 'k' => '12345']
+            ]
+        ];
+        $keys = new KeySet();
+        $keys->load(json_encode($keyset_data));
+
+        $key = $keys->get(['kty' => 'oct']);
+        $this->assertNotNull($key);
+    }
+
     function testInvalidJWKS() {
         // Invalid due to additional comma at the end of keys array --------v
         $invalid = '{"keys": [ { "kid": "oct1", "kty": "oct", "k": "12345" }, ] }';
